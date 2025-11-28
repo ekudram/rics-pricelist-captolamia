@@ -1,325 +1,598 @@
-/* Reset and base styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
-    color: #333;
-    background: linear-gradient(135deg, #fff8f0 0%, #ffe8d6 100%);
-    min-height: 100vh;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-/* Header */
-header {
-    text-align: center;
-    margin-bottom: 30px;
-    padding: 25px;
-    background: linear-gradient(135deg, #ff7e30 0%, #ff5722 100%);
-    color: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(255, 87, 34, 0.3);
-}
-
-header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-header p {
-    font-size: 1.1rem;
-    opacity: 0.95;
-}
-
-/* Tabs */
-.tabs {
-    display: flex;
-    background: white;
-    border-radius: 12px 12px 0 0;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    overflow-x: auto;
-}
-
-.tab-button {
-    padding: 15px 25px;
-    border: none;
-    background: none;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    border-bottom: 3px solid transparent;
-    color: #666;
-    white-space: nowrap;
-}
-
-.tab-button:hover {
-    background: #fff5eb;
-    color: #ff7e30;
-}
-
-.tab-button.active {
-    background: white;
-    border-bottom: 3px solid #ff7e30;
-    color: #ff7e30;
-    font-weight: 600;
-}
-
-/* Tab content */
-.tab-content {
-    background: white;
-    border-radius: 0 0 12px 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    min-height: 400px;
-    border: 1px solid #ffe0cc;
-    border-top: none;
-}
-
-.tab-pane {
-    display: none;
-    padding: 25px;
-}
-
-.tab-pane.active {
-    display: block;
-}
-
-/* Search box */
-.search-box {
-    margin-bottom: 20px;
-}
-
-.search-input {
-    width: 100%;
-    padding: 14px;
-    border: 2px solid #ffe0cc;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    background: #fffaf5;
-}
-
-.search-input:focus {
-    outline: none;
-    border-color: #ff7e30;
-    background: white;
-    box-shadow: 0 0 0 3px rgba(255, 126, 48, 0.1);
-}
-
-/* Table styles */
-.table-container {
-    overflow-x: auto;
-    border-radius: 8px;
-}
-
-.items-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-    background: white;
-}
-
-.items-table th {
-    background: linear-gradient(135deg, #fff5eb 0%, #ffe8d6 100%);
-    padding: 16px;
-    text-align: left;
-    font-weight: 600;
-    color: #e65100;
-    border-bottom: 2px solid #ff7e30;
-    cursor: pointer;
-    user-select: none;
-    position: relative;
-    font-size: 0.95rem;
-}
-
-.items-table th:hover {
-    background: linear-gradient(135deg, #ffe8d6 0%, #ffd9b3 100%);
-}
-
-.items-table th::after {
-    content: '↕';
-    position: absolute;
-    right: 12px;
-    opacity: 0.5;
-    color: #ff7e30;
-}
-
-.items-table th.sort-asc::after {
-    content: '↑';
-    opacity: 1;
-}
-
-.items-table th.sort-desc::after {
-    content: '↓';
-    opacity: 1;
-}
-
-.items-table td {
-    padding: 16px;
-    border-bottom: 1px solid #ffe0cc;
-    vertical-align: top;
-    transition: background-color 0.2s ease;
-}
-
-.items-table tbody tr:hover {
-    background: #fffaf5;
-}
-
-.items-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-/* Item name styles */
-.item-name {
-    font-weight: 600;
-    font-size: 1.05rem;
-    color: #e65100;
-    margin-bottom: 4px;
-}
-
-/* Metadata styles */
-.metadata {
-    font-size: 0.85rem;
-    color: #8d6e63;
-    display: block;
-    line-height: 1.4;
-}
-
-.metadata .usage {
-    color: #ff7e30;
-    font-weight: 500;
-}
-
-/* Price highlighting */
-.items-table td:nth-child(2) {
-    font-weight: 600;
-    color: #e65100;
-}
-
-/* Race-specific styles */
-.race-xenotype {
-    background-color: #fffaf5;
-}
-
-.race-base {
-    background-color: white;
-    border-left: 3px solid #ff7e30;
-}
-
-/* Trait description styles */
-.trait-description {
-    margin-bottom: 8px;
-    line-height: 1.5;
-    color: #5d4037;
-}
-
-/* Mobile priority indicators */
-.mobile-priority {
-    display: none;
-}
-
-/* No wrap for important columns */
-.items-table .no-wrap {
-    white-space: nowrap;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-    .container {
-        padding: 15px;
+// assets/js/rics-store.js
+class RICSStore {
+    constructor() {
+        this.data = {
+            items: [],
+            events: [],
+            traits: [],
+            races: []
+        };
+        this.filteredData = {
+            items: [],
+            events: [],
+            traits: [],
+            races: []
+        };
+        this.currentSort = {};
+        this.init();
     }
-    
-    header {
-        padding: 20px;
-        margin-bottom: 20px;
+
+    async init() {
+        await this.loadAllData();
+        this.renderAllTabs();
+        this.setupEventListeners();
     }
-    
-    header h1 {
-        font-size: 2rem;
+
+    async loadAllData() {
+        try {
+            // Load items
+            const itemsResponse = await fetch('data/StoreItems.json');
+            const itemsData = await itemsResponse.json();
+
+            if (itemsData.items) {
+                this.data.items = this.processItemsData(itemsData.items);
+            } else {
+                this.data.items = this.processItemsData(itemsData);
+            }
+            this.filteredData.items = [...this.data.items];
+
+            // Load traits
+            const traitsResponse = await fetch('data/Traits.json');
+            const traitsData = await traitsResponse.json();
+            this.data.traits = this.processTraitsData(traitsData);
+            this.filteredData.traits = [...this.data.traits];
+
+            // Load races
+            const racesResponse = await fetch('data/RaceSettings.json');
+            const racesData = await racesResponse.json();
+            this.data.races = this.processRacesData(racesData);
+            this.filteredData.races = [...this.data.races];
+
+            // Load events
+            const eventsResponse = await fetch('data/Incidents.json');
+            const eventsData = await eventsResponse.json();
+            this.data.events = this.processEventsData(eventsData);
+            this.filteredData.events = [...this.data.events];
+
+            // Load weather
+            const weatherResponse = await fetch('data/Weather.json');
+            const weatherData = await weatherResponse.json();
+            this.data.weather = this.processWeatherData(weatherData);
+            this.filteredData.weather = [...this.data.weather];
+
+            console.log('Data loaded:', {
+                items: this.data.items.length,
+                traits: this.data.traits.length,
+                races: this.data.races.length,
+                events: this.data.events.length,
+                weather: this.data.weather.length
+            });
+
+        } catch (error) {
+            console.error('Error loading data:', error);
+            this.loadSampleData();
+        }
     }
-    
-    .tab-button {
-        padding: 12px 18px;
-        font-size: 0.9rem;
+
+    processItemsData(itemsObject) {
+        return Object.entries(itemsObject)
+            .map(([key, itemData]) => {
+                // Use the structure from your sample
+                return {
+                    defName: itemData.DefName || key,
+                    name: itemData.CustomName || itemData.DefName || key,
+                    price: itemData.BasePrice || 0,
+                    category: itemData.Category || 'Misc',
+                    quantityLimit: itemData.HasQuantityLimit ? (itemData.QuantityLimit || 0) : 'Unlimited',
+                    limitMode: itemData.LimitMode,
+                    mod: itemData.Mod || 'Unknown',
+                    isUsable: itemData.IsUsable || false,
+                    isEquippable: itemData.IsEquippable || false,
+                    isWearable: itemData.IsWearable || false,
+                    enabled: itemData.Enabled !== false
+                };
+            })
+            .filter(item => {
+                // Only include if enabled AND at least one usage type is true
+                return (item.enabled || item.isUsable || item.isEquippable || item.isWearable);
+            })
+            .filter(item => item.price > 0); // Only items with price > 0
     }
-    
-    .tab-pane {
-        padding: 20px;
+
+    processEventsData(eventsObject) {
+        return Object.entries(eventsObject)
+            .map(([key, eventData]) => {
+                return {
+                    defName: eventData.DefName || key,
+                    label: eventData.Label || eventData.DefName || key,
+                    baseCost: eventData.BaseCost || 0,
+                    karmaType: eventData.KarmaType || 'None',
+                    modSource: eventData.ModSource || 'Unknown',
+                    enabled: eventData.Enabled !== false
+                };
+            })
+            .filter(event => event.enabled && event.baseCost > 0);
     }
-    
-    .search-input {
-        padding: 12px;
+
+
+    processTraitsData(traitsObject) {
+        return Object.entries(traitsObject)
+            .map(([key, traitData]) => {
+                return {
+                    defName: traitData.DefName || key,
+                    name: traitData.Name || traitData.DefName || key,
+                    description: this.processTraitDescription(traitData.Description || ''),
+                    stats: traitData.Stats || [],
+                    conflicts: traitData.Conflicts || [],
+                    canAdd: traitData.CanAdd || false,
+                    canRemove: traitData.CanRemove || false,
+                    addPrice: traitData.AddPrice || 0,
+                    removePrice: traitData.RemovePrice || 0,
+                    bypassLimit: traitData.BypassLimit || false,
+                    modSource: traitData.ModSource || 'Unknown'
+                };
+            })
+            .filter(trait => {
+                // Only include if at least one operation is allowed
+                return trait.canAdd || trait.canRemove;
+            })
+            .filter(trait => trait.addPrice > 0 || trait.removePrice > 0); // Only traits with prices
     }
-    
-    .items-table th,
-    .items-table td {
-        padding: 12px 10px;
-        font-size: 0.9rem;
+
+    processWeatherData(weatherObject) {
+        return Object.entries(weatherObject)
+            .map(([key, weatherData]) => {
+                return {
+                    defName: weatherData.DefName || key,
+                    label: weatherData.Label || weatherData.DefName || key,
+                    description: weatherData.Description || '',
+                    baseCost: weatherData.BaseCost || 0,
+                    karmaType: weatherData.KarmaType || 'None',
+                    modSource: weatherData.ModSource || 'Unknown',
+                    enabled: weatherData.Enabled !== false
+                };
+            })
+            .filter(weather => weather.enabled && weather.baseCost > 0);
     }
-    
-    .items-table {
-        min-width: 600px;
+
+    processTraitDescription(description) {
+        // Replace all common pawn placeholders with traditional names
+        // Handle both {} and [] formats with separate replacements
+        return description
+            // Replace {PAWN_*} formats
+            .replace(/{PAWN_nameDef}/g, 'Timmy')
+            .replace(/{PAWN_name}/g, 'Timmy')
+            .replace(/{PAWN_pronoun}/g, 'he')
+            .replace(/{PAWN_possessive}/g, 'his')
+            .replace(/{PAWN_objective}/g, 'him')
+            .replace(/{PAWN_label}/g, 'Timmy')
+            .replace(/{PAWN_def}/g, 'Timmy')
+            // Replace [PAWN_*] formats  
+            .replace(/\[PAWN_nameDef\]/g, 'Timmy')
+            .replace(/\[PAWN_name\]/g, 'Timmy')
+            .replace(/\[PAWN_pronoun\]/g, 'he')
+            .replace(/\[PAWN_possessive\]/g, 'his')
+            .replace(/\[PAWN_objective\]/g, 'him')
+            .replace(/\[PAWN_label\]/g, 'Timmy')
+            .replace(/\[PAWN_def\]/g, 'Timmy');
     }
-    
-    /* Show priority indicators on mobile */
-    .mobile-priority {
-        display: inline-block;
-        margin-left: 5px;
+
+    processRacesData(racesObject) {
+        return Object.entries(racesObject)
+            .map(([raceKey, raceData]) => {
+                const baseRace = {
+                    defName: raceKey,
+                    name: raceData.DisplayName || raceKey,
+                    basePrice: raceData.BasePrice || 0,
+                    minAge: raceData.MinAge || 0,
+                    maxAge: raceData.MaxAge || 0,
+                    allowCustomXenotypes: raceData.AllowCustomXenotypes || false,
+                    defaultXenotype: raceData.DefaultXenotype || 'None',
+                    enabled: raceData.Enabled !== false,
+                    allowedGenders: raceData.AllowedGenders || {},
+                    xenotypePrices: raceData.XenotypePrices || {},
+                    enabledXenotypes: raceData.EnabledXenotypes || {}
+                };
+
+                // Create entries for each enabled xenotype
+                const xenotypeEntries = [];
+                if (baseRace.enabledXenotypes) {
+                    Object.entries(baseRace.enabledXenotypes).forEach(([xenotype, isEnabled]) => {
+                        if (isEnabled && baseRace.xenotypePrices[xenotype]) {
+                            const xenotypePrice = baseRace.basePrice * baseRace.xenotypePrices[xenotype];
+                            xenotypeEntries.push({
+                                defName: `${raceKey}_${xenotype}`,
+                                name: `${baseRace.name} ${xenotype}`, // Changed from "Human (Baseliner)" to "Human Baseliner"
+                                basePrice: Math.round(xenotypePrice),
+                                isXenotype: true,
+                                parentRace: baseRace.name,
+                                xenotype: xenotype,
+                                priceMultiplier: baseRace.xenotypePrices[xenotype],
+                                minAge: baseRace.minAge,
+                                maxAge: baseRace.maxAge,
+                                enabled: true,
+                                allowedGenders: baseRace.allowedGenders // Pass along gender info
+                            });
+                        }
+                    });
+                }
+
+                // Return both the base race and its xenotypes
+                const baseRaceEntry = {
+                    defName: raceKey,
+                    name: baseRace.name,
+                    basePrice: baseRace.basePrice,
+                    isXenotype: false,
+                    minAge: baseRace.minAge,
+                    maxAge: baseRace.maxAge,
+                    allowCustomXenotypes: baseRace.allowCustomXenotypes,
+                    defaultXenotype: baseRace.defaultXenotype,
+                    enabled: baseRace.enabled,
+                    xenotypeCount: xenotypeEntries.length,
+                    allowedGenders: baseRace.allowedGenders
+                };
+
+                return [baseRaceEntry, ...xenotypeEntries];
+            })
+            .flat() // Flatten the array of arrays
+            .filter(race => race.enabled && race.basePrice > 0);
     }
-    
-    .mobile-priority.primary::after {
-        content: "💰";
+
+    renderAllTabs() {
+        this.renderItems();
+        this.renderEvents();
+        this.renderWeather();
+        this.renderTraits();
+        this.renderRaces();
+    }
+
+    renderItems() {
+        const tbody = document.getElementById('items-tbody');
+        const items = this.filteredData.items;
+
+        if (items.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px;">No items found</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = items.map(item => `
+            <tr>
+                <td>
+                    <div class="item-name">${this.escapeHtml(item.name)}</div>
+                    <span class="metadata">
+                        ${this.escapeHtml(item.defName)}
+                        <br>From ${this.escapeHtml(item.mod)}
+                        ${this.getUsageTypes(item)}
+                    </span>
+                </td>
+                <td class="no-wrap">
+                    <strong>${item.price}</strong>
+                    <span class="mobile-priority primary"></span>
+                </td>
+                <td>${this.escapeHtml(item.category)}</td>
+                <td class="no-wrap">${item.quantityLimit}</td>
+                <td>${item.limitMode || 'N/A'}</td>
+            </tr>
+        `).join('');
+    }
+
+    getUsageTypes(item) {
+        const types = [];
+        if (item.isUsable) types.push('Usable');
+        if (item.isEquippable) types.push('Equippable');
+        if (item.isWearable) types.push('Wearable');
+
+        return types.length > 0 ? `<br><span class="usage">Usage: ${types.join(', ')}</span>` : '';
+    }
+
+    renderEvents() {
+        const tbody = document.getElementById('events-tbody');
+        const events = this.filteredData.events;
+
+        if (events.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 40px;">No events found</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = events.map(event => `
+        <tr>
+            <td>
+                <div class="item-name">${this.escapeHtml(event.label)}</div>
+                <span class="metadata">
+                    ${this.escapeHtml(event.defName)}
+                    <br>From ${this.escapeHtml(event.modSource)}
+                    <br>Usage: !event ${this.escapeHtml(event.label)} or !event ${this.escapeHtml(event.defName)}
+                </span>
+            </td>
+            <td class="no-wrap">
+                <strong>${event.baseCost}</strong>
+            </td>
+            <td>${this.escapeHtml(event.karmaType)}</td>
+        </tr>
+    `).join('');
+    }
+
+    renderTraits() {
+        const tbody = document.getElementById('traits-tbody');
+        const traits = this.filteredData.traits;
+
+        if (traits.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 40px;">No traits found</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = traits.map(trait => `
+            <tr>
+                <td>
+                    <div class="item-name">${this.escapeHtml(trait.name)}</div>
+                    <span class="metadata">
+                        ${this.escapeHtml(trait.defName)}
+                        <br>From ${this.escapeHtml(trait.modSource)}
+                        ${trait.bypassLimit ? '<br><span class="usage">Bypasses Limit</span>' : ''}
+                    </span>
+                </td>
+                <td class="no-wrap">
+                    ${trait.canAdd ? `<strong>${trait.addPrice}</strong>` : '<span class="metadata">Cannot Add</span>'}
+                </td>
+                <td class="no-wrap">
+                    ${trait.canRemove ? `<strong>${trait.removePrice}</strong>` : '<span class="metadata">Cannot Remove</span>'}
+                </td>
+                <td>
+                    <div class="trait-description">${this.escapeHtml(trait.description)}</div>
+                    ${this.renderTraitStats(trait)}
+                    ${this.renderTraitConflicts(trait)}
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    renderTraitStats(trait) {
+        if (!trait.stats || trait.stats.length === 0) return '';
+
+        return `
+            <div class="metadata">
+                <strong>Stats:</strong>
+                <ul style="margin: 5px 0; padding-left: 20px;">
+                    ${trait.stats.map(stat => `<li>${this.escapeHtml(stat)}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+    }
+
+    renderTraitConflicts(trait) {
+        if (!trait.conflicts || trait.conflicts.length === 0) return '';
+
+        return `
+        <div class="metadata">
+            <strong>Conflicts with:</strong>
+            <ul style="margin: 5px 0; padding-left: 20px;">
+                ${trait.conflicts.map(conflict => `<li>${this.escapeHtml(conflict)}</li>`).join('')}
+            </ul>
+        </div>
+    `;
+    }
+
+    renderRaces() {
+        const tbody = document.getElementById('races-tbody');
+        const races = this.filteredData.races;
+
+        if (races.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px;">No races found</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = races.map(race => `
+        <tr>
+            <td>
+                <div class="item-name">${this.escapeHtml(race.name)}</div>
+                <span class="metadata">
+                    ${race.isXenotype ? `Xenotype of ${this.escapeHtml(race.parentRace)}` : 'Base Race'}
+                    ${!race.isXenotype && race.xenotypeCount > 0 ? `<br>${race.xenotypeCount} xenotypes available` : ''}
+                    ${race.allowCustomXenotypes ? '<br>Custom xenotypes allowed' : ''}
+                </span>
+            </td>
+            <td class="no-wrap">
+                <strong>${race.basePrice}</strong>
+                ${race.isXenotype ? `<span class="metadata">${(race.priceMultiplier * 100).toFixed(0)}% of base</span>` : ''}
+            </td>
+            <td class="no-wrap">
+                Age: ${race.minAge}-${race.maxAge}
+            </td>
+            <td class="no-wrap">
+                ${this.getAvailableGenders(race.allowedGenders)}
+            </td>
+        </tr>
+    `).join('');
+    }
+
+    renderWeather() {
+        const tbody = document.getElementById('weather-tbody');
+        const weather = this.filteredData.weather;
+
+        if (weather.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 40px;">No weather found</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = weather.map(weatherItem => `
+        <tr>
+            <td>
+                <div class="item-name">${this.escapeHtml(weatherItem.label)}</div>
+                <span class="metadata">
+                    ${this.escapeHtml(weatherItem.defName)}
+                    <br>From ${this.escapeHtml(weatherItem.modSource)}
+                    <br>Usage: !weather ${this.escapeHtml(weatherItem.label)} or !weather ${this.escapeHtml(weatherItem.defName)}
+                </span>
+            </td>
+            <td class="no-wrap">
+                <strong>${weatherItem.baseCost}</strong>
+            </td>
+            <td>${this.escapeHtml(weatherItem.karmaType)}</td>
+            <td>
+                ${weatherItem.description ? `<div class="trait-description">${this.escapeHtml(weatherItem.description)}</div>` : 'No description'}
+            </td>
+        </tr>
+    `).join('');
+    }
+
+    // Helper method to format available genders
+    getAvailableGenders(allowedGenders) {
+        const genders = [];
+        if (allowedGenders.AllowMale) genders.push('M');
+        if (allowedGenders.AllowFemale) genders.push('F');
+        if (allowedGenders.AllowOther) genders.push('O');
+
+        return genders.join(' ');
+    }
+
+    setupEventListeners() {
+        // Tab switching
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                this.switchTab(button.dataset.tab);
+            });
+        });
+
+        // Search functionality for each tab
+        this.setupSearch('items');
+        this.setupSearch('events');
+        this.setupSearch('weather');
+        this.setupSearch('traits');
+        this.setupSearch('races');
+
+        // Sort functionality
+        this.setupSorting();
+    }
+
+    setupSearch(tabName) {
+        const searchInput = document.getElementById(`${tabName}-search`);
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                this.filterTab(tabName, e.target.value);
+            });
+        }
+    }
+
+    filterTab(tabName, searchTerm) {
+        const term = searchTerm.toLowerCase().trim();
+        const allData = this.data[tabName];
+
+        if (term === '') {
+            this.filteredData[tabName] = [...allData];
+        } else {
+            this.filteredData[tabName] = allData.filter(item =>
+                Object.values(item).some(value =>
+                    value && value.toString().toLowerCase().includes(term)
+                )
+            );
+        }
+
+        this[`render${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`]();
+    }
+
+    setupSorting() {
+        // Add sorting to all sortable headers
+        document.querySelectorAll('th[data-sort]').forEach(header => {
+            header.addEventListener('click', () => {
+                const tab = header.closest('.tab-pane').id;
+                this.sortTab(tab, header.dataset.sort);
+            });
+        });
+    }
+
+    sortTab(tabName, field) {
+        if (!this.currentSort[tabName]) {
+            this.currentSort[tabName] = { field, direction: 'asc' };
+        } else if (this.currentSort[tabName].field === field) {
+            this.currentSort[tabName].direction = this.currentSort[tabName].direction === 'asc' ? 'desc' : 'asc';
+        } else {
+            this.currentSort[tabName] = { field, direction: 'asc' };
+        }
+
+        this.filteredData[tabName].sort((a, b) => {
+            let aValue = a[field];
+            let bValue = b[field];
+
+            // Handle "Unlimited" quantity limit for sorting
+            if (field === 'quantityLimit') {
+                aValue = aValue === 'Unlimited' ? Infinity : aValue;
+                bValue = bValue === 'Unlimited' ? Infinity : bValue;
+            }
+
+            if (typeof aValue === 'string') {
+                aValue = aValue.toLowerCase();
+                bValue = bValue.toLowerCase();
+            }
+
+            if (aValue < bValue) return this.currentSort[tabName].direction === 'asc' ? -1 : 1;
+            if (aValue > bValue) return this.currentSort[tabName].direction === 'asc' ? 1 : -1;
+            return 0;
+        });
+
+        this[`render${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`]();
+    }
+
+    switchTab(tabName) {
+        // Update active tab button
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.classList.remove('active');
+        });
+        document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+
+        // Update active tab content
+        document.querySelectorAll('.tab-pane').forEach(pane => {
+            pane.classList.remove('active');
+        });
+        document.getElementById(tabName).classList.add('active');
+    }
+
+    escapeHtml(unsafe) {
+        if (typeof unsafe !== 'string') return unsafe;
+        return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    loadSampleData() {
+        // Fallback sample data
+        console.log('Loading sample data...');
+        this.data.items = [
+            {
+                defName: "TextBook",
+                name: "Textbook",
+                price: 267,
+                category: "Books",
+                quantityLimit: 5,
+                limitMode: "OneStack",
+                mod: "Core",
+                isUsable: false,
+                isEquippable: false,
+                isWearable: false,
+                enabled: true
+            },
+            {
+                defName: "Schematic",
+                name: "Schematic",
+                price: 250,
+                category: "Books",
+                quantityLimit: 5,
+                limitMode: "OneStack",
+                mod: "Core",
+                isUsable: false,
+                isEquippable: false,
+                isWearable: false,
+                enabled: true
+            }
+        ];
+        this.filteredData.items = [...this.data.items];
+        this.renderItems();
     }
 }
 
-@media (max-width: 480px) {
-    .container {
-        padding: 10px;
-    }
-    
-    header h1 {
-        font-size: 1.8rem;
-    }
-    
-    header p {
-        font-size: 1rem;
-    }
-    
-    .tab-button {
-        padding: 10px 15px;
-        font-size: 0.85rem;
-    }
-    
-    .items-table {
-        min-width: 550px;
-    }
-}
-
-/* Custom scrollbar for webkit browsers */
-.table-container::-webkit-scrollbar {
-    height: 8px;
-}
-
-.table-container::-webkit-scrollbar-track {
-    background: #ffe0cc;
-    border-radius: 4px;
-}
-
-.table-container::-webkit-scrollbar-thumb {
-    background: #ff7e30;
-    border-radius: 4px;
-}
-
-.table-container::-webkit-scrollbar-thumb:hover {
-    background: #e65100;
-}
+// Initialize when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    new RICSStore();
+});
