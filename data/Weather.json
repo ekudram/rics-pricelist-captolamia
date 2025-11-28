@@ -185,5 +185,82 @@
     "Enabled": true,
     "ModSource": "[CAP] Thunder Snow",
     "Version": 1
+  },
+  "Cloudy": {
+    "DefName": "Cloudy",
+    "Label": "cloudy",
+    "Description": "A cloudy day, lowers brightness.\n\n<i><color=#66E0E4FF>Seasonal Weather (Continued)</color></i>",
+    "BaseCost": 175,
+    "KarmaType": "Neutral",
+    "EventCap": 3,
+    "Enabled": true,
+    "ModSource": "Seasonal Weather (Continued)",
+    "Version": 1
+  },
+  "FogSnow": {
+    "DefName": "FogSnow",
+    "Label": "fog snow",
+    "Description": "Snow reduces the accuracy of ranged weapons, extinguishes fire, and slows people down, fog reduces sight.\n\n<i><color=#66E0E4FF>Seasonal Weather (Continued)</color></i>",
+    "BaseCost": 200,
+    "KarmaType": "Neutral",
+    "EventCap": 3,
+    "Enabled": true,
+    "ModSource": "Seasonal Weather (Continued)",
+    "Version": 1
+  },
+  "Dust": {
+    "DefName": "Dust",
+    "Label": "dust",
+    "Description": "Dust reduces the accuracy of ranged weapons.\n\n<i><color=#66E0E4FF>Seasonal Weather (Continued)</color></i>",
+    "BaseCost": 175,
+    "KarmaType": "Neutral",
+    "EventCap": 3,
+    "Enabled": true,
+    "ModSource": "Seasonal Weather (Continued)",
+    "Version": 1
+  },
+  "DryDuststorm": {
+    "DefName": "DryDuststorm",
+    "Label": "dry duststorm",
+    "Description": "Dry duststorms are dangerous because the lightning can start fires and there is no rain to put them out.\n\n<i><color=#66E0E4FF>Seasonal Weather (Continued)</color></i>",
+    "BaseCost": 300,
+    "KarmaType": "Bad",
+    "EventCap": 3,
+    "Enabled": true,
+    "ModSource": "Seasonal Weather (Continued)",
+    "Version": 1
+  },
+  "DoubleRainbow": {
+    "DefName": "DoubleRainbow",
+    "Label": "double rainbow",
+    "Description": "A double rainbow. The weather is soothing.\n\n<i><color=#66E0E4FF>Seasonal Weather (Continued)</color></i>",
+    "BaseCost": 150,
+    "KarmaType": "Neutral",
+    "EventCap": 3,
+    "Enabled": true,
+    "ModSource": "Seasonal Weather (Continued)",
+    "Version": 1
+  },
+  "VPE_RadioactiveFog": {
+    "DefName": "VPE_RadioactiveFog",
+    "Label": "radioactive fog",
+    "Description": "A Nuclear reactor's meltdown has freed a cloud of radioactive material. This fog will hinder ranged attacks until it dissipates.\n\n<i><color=#66E0E4FF>Vanilla Furniture Expanded - Power</color></i>",
+    "BaseCost": 150,
+    "KarmaType": "Neutral",
+    "EventCap": 3,
+    "Enabled": true,
+    "ModSource": "Vanilla Furniture Expanded - Power",
+    "Version": 1
+  },
+  "VPE_Hurricane": {
+    "DefName": "VPE_Hurricane",
+    "Label": "hurricane",
+    "Description": "Extreme wind will cause a slowdown to everyone not under the roof.\n\n<i><color=#66E0E4FF>Vanilla Psycasts Expanded</color></i>",
+    "BaseCost": 300,
+    "KarmaType": "Bad",
+    "EventCap": 3,
+    "Enabled": true,
+    "ModSource": "Vanilla Psycasts Expanded",
+    "Version": 1
   }
 }
